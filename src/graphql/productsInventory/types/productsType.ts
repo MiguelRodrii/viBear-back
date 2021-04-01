@@ -14,12 +14,16 @@ type Query {
 type Mutation {
     createProductType(productType: CreateProductType): ProductType
     updateProductType(productType: UpdateProductType): ProductType
+    deleteProductType(id: Int!): Boolean
     createProductDefinition(productDefinition: CreateProductDefinition): ProductDefinition
     updateProductDefinition(productDefinition: UpdateProductDefinition): ProductDefinition
+    deleteProductDefinition(id: Int!): Boolean
     createProduct(product: CreateProduct): Product
     updateProduct(product: UpdateProduct): Product
+    deleteProduct(id: Int!): Boolean
     createExpirationDate(expirationDate: CreateExpirationDate): ExpirationDate
     updateExpirationDate(expirationDate: UpdateExpirationDate): ExpirationDate
+    deleteExpirationDate(id: Int!): Boolean 
 }
 
 type IvaPercentage {
@@ -89,17 +93,17 @@ input UpdateProduct {
 
 type ExpirationDate {
     id: Int
-    product: Product
     value: Date
+    product: Product
 }
 input CreateExpirationDate {
-    product_id: Int!
     value: Date!
+    product_id: Int!
 }
 input UpdateExpirationDate {
     id: Int!
-    product_id: Int
     value: Date
+    product_id: Int
 }
 `);
 

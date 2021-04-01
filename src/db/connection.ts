@@ -11,3 +11,7 @@ const pool = new Pool({
 });
 
 export const client = await pool.connect();
+
+export const executeQuery = (query: string) => {
+  return "";
+};
