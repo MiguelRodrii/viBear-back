@@ -1,4 +1,4 @@
-import { Client, Pool} from "https://deno.land/x/pg@v0.6.0/mod.ts";
+import { Pool } from "https://deno.land/x/pg@v0.6.0/mod.ts";
 
 const port = Deno.env.get("POSTGRESQL_PORT");
 
@@ -10,8 +10,9 @@ const pool = new Pool({
   port: port === undefined ? 5432 : +port
 });
 
+const client = await pool.connect();
+
 export const executeQuery = async (query: string) => {
-  const client = await pool.connect();
   const result = await client.query(query);
   await client.release();
   return result;
