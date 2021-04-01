@@ -12,10 +12,14 @@ type Query {
 }
 
 type Mutation {
-    createProductType(productType: ProductTypeInput): ProductType
-    createProductDefinition(productDefinition: ProductDefinitionInput): ProductDefinition
-    createProduct(product: ProductInput): Product
-    createExpirationDate(expirationDate: ExpirationDateInput): ExpirationDate
+    createProductType(productType: CreateProductType): ProductType
+    updateProductType(productType: UpdateProductType): ProductType
+    createProductDefinition(productDefinition: CreateProductDefinition): ProductDefinition
+    updateProductDefinition(productDefinition: UpdateProductDefinition): ProductDefinition
+    createProduct(product: CreateProduct): Product
+    updateProduct(product: UpdateProduct): Product
+    createExpirationDate(expirationDate: CreateExpirationDate): ExpirationDate
+    updateExpirationDate(expirationDate: UpdateExpirationDate): ExpirationDate
 }
 
 type IvaPercentage {
@@ -29,10 +33,16 @@ type ProductType {
     is_expirable: Boolean
     iva_percentage: IvaPercentage    
 }
-input ProductTypeInput {
+input CreateProductType {
     name: String!
     is_expirable: Boolean!
     iva_percentage_id: Int!
+}
+input UpdateProductType {
+    id: Int!
+    name: String
+    is_expirable: Boolean
+    iva_percentage_id: Int
 }
 
 type ProductDefinition {
@@ -41,10 +51,16 @@ type ProductDefinition {
     description: String
     product_type: ProductType    
 }
-input ProductDefinitionInput {
+input CreateProductDefinition {
     name: String!
     description: String!
     product_type_id: Int!
+}
+input UpdateProductDefinition {
+    id: Int!
+    name: String
+    description: String
+    product_type_id: Int
 }
 
 type Product {
@@ -55,12 +71,20 @@ type Product {
     current_amount: Int
     product_definition: ProductDefinition
 }
-input ProductInput {
+input CreateProduct {
     purchase_price: Float!
     sale_price: Float!
     initial_amount: Int!
     current_amount: Int!
     product_definition_id: Int!
+}
+input UpdateProduct {
+    id: Int!
+    purchase_price: Float
+    sale_price: Float
+    initial_amount: Int
+    current_amount: Int
+    product_definition_id: Int
 }
 
 type ExpirationDate {
@@ -68,9 +92,14 @@ type ExpirationDate {
     product: Product
     value: Date
 }
-input ExpirationDateInput {
+input CreateExpirationDate {
     product_id: Int!
     value: Date!
+}
+input UpdateExpirationDate {
+    id: Int!
+    product_id: Int
+    value: Date
 }
 `);
 

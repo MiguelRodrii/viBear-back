@@ -50,6 +50,40 @@ const productsResolver = {
       );
       return result.rowCount === 0 ? [] : result.rows[0];
     },
+    updateProductType: async (
+      parent: Record<string, unknown>,
+      { productType }: {
+        productType: {
+          id: number;
+          name: string;
+          is_expirable: boolean;
+          iva_percentage_id: number;
+        };
+      },
+    ) => {
+      const previousValue = await db.query(
+        `select pt.* from products_inventory.product_types pt where pt.id = ${productType.id};`,
+      );
+      if (previousValue.rowCount === 0) {
+        throw new Error("Product type: " + productType.id + " non registered.");
+      }
+      const result = await db.query(
+        `update products_inventory.product_types set "name" = '${
+          productType.name === undefined
+            ? previousValue.rows[0].name
+            : productType.name
+        }', is_expirable = ${
+          productType.is_expirable === undefined
+            ? previousValue.rows[0].is_expirable
+            : productType.is_expirable
+        }, iva_percentage_id = ${
+          productType.iva_percentage_id === undefined
+            ? previousValue.rows[0].iva_percentage_id
+            : productType.iva_percentage_id
+        } where id = ${productType.id} returning *;`,
+      );
+      return result.rowCount === 0 ? [] : result.rows[0];
+    },
     createProductDefinition: async (
       parent: Record<string, unknown>,
       { productDefinition }: {
@@ -63,6 +97,42 @@ const productsResolver = {
       const result = await db.query(
         `insert into products_inventory.product_definitions ("name", description, product_type_id) values ('${productDefinition.name}', '${productDefinition.description}', ${productDefinition.product_type_id}) returning *;
       `,
+      );
+      return result.rowCount === 0 ? [] : result.rows[0];
+    },
+    updateProductDefinition: async (
+      parent: Record<string, unknown>,
+      { productDefinition }: {
+        productDefinition: {
+          id: number;
+          name: string;
+          description: string;
+          product_type_id: number;
+        };
+      },
+    ) => {
+      const previousValue = await db.query(
+        `select pd.* from products_inventory.product_definitions pd where pd.id = ${productDefinition.id};`,
+      );
+      if (previousValue.rowCount === 0) {
+        throw new Error(
+          "Product definition: " + productDefinition.id + " non registered.",
+        );
+      }
+      const result = await db.query(
+        `update products_inventory.product_definitions set "name" = '${
+          productDefinition.name === undefined
+            ? previousValue.rows[0].name
+            : productDefinition.name
+        }', description = '${
+          productDefinition.description === undefined
+            ? previousValue.rows[0].description
+            : productDefinition.description
+        }', product_type_id = ${
+          productDefinition.product_type_id === undefined
+            ? previousValue.rows[0].product_type_id
+            : productDefinition.product_type_id
+        } where id = ${productDefinition.id} returning *;`,
       );
       return result.rowCount === 0 ? [] : result.rows[0];
     },
