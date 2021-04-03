@@ -1,11 +1,12 @@
 import { Pool } from "https://deno.land/x/pg@v0.6.0/mod.ts";
+import {env} from "../config/env.ts";
 
-const port = Deno.env.get("POSTGRESQL_PORT");
+console.log()
 
 export const pool = new Pool({
-  user: Deno.env.get("POSTGRESQL_USER"),
-  hostname: Deno.env.get("POSTGRESQL_HOST"),
-  database: Deno.env.get("POSTGRESQL_DB_NAME"),
-  password: Deno.env.get("POSTGRESQL_PASSWORD") || "",
-  port: port === undefined ? 5432 : +port
+  user: env.POSTGRESQL_USER,
+  hostname: env.POSTGRESQL_HOST,
+  database: env.POSTGRESQL_DB_NAME,
+  password: env.POSTGRESQL_PASSWORD || "",
+  port: env.POSTGRESQL_PORT === undefined ? 5432 : +env.POSTGRESQL_PORT
 });

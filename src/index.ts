@@ -1,11 +1,9 @@
 import { Application, Router, RouterContext } from "https://deno.land/x/oak@v6.2.0/mod.ts";
-import { applyGraphQL, gql, GQLError } from "https://deno.land/x/oak_graphql/mod.ts";
+import { applyGraphQL} from "https://deno.land/x/oak_graphql/mod.ts";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
-
+import { env } from "./config/env.ts";
 import {resolvers}  from "./graphql/resolvers.ts";
 import {types} from "./graphql/types.ts";
-
-const PORT = Deno.env.get("PORT");
 
 const app = new Application();
 
@@ -35,5 +33,5 @@ const GraphQLService = await applyGraphQL<Router>({
 
 app.use(GraphQLService.routes(), GraphQLService.allowedMethods());
 
-console.log(`Server listening on http://localhost:${PORT}/graphql`);
-await app.listen({ port: PORT === undefined ? 4000 : +PORT });
+console.log(`Server listening on http://localhost:${env.PORT}/graphql`);
+await app.listen({ port: env.PORT === undefined ? 4000 : +env.PORT });
