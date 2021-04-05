@@ -4,31 +4,31 @@ const productsResolver = {
   Query: {
     ivaPercentages: async () => {
       const result = await db.query(
-        "select * from products_inventory.iva_percentages",
+        "select * from products_inventory.iva_percentages order by id desc",
       );
       return result.rows;
     },
     productTypes: async () => {
       const result = await db.query(
-        "select * from products_inventory.product_types",
+        "select * from products_inventory.product_types order by id desc",
       );
       return result.rows;
     },
     productDefinitions: async () => {
       const result = await db.query(
-        "select * from products_inventory.product_definitions",
+        "select * from products_inventory.product_definitions order by id desc",
       );
       return result.rows;
     },
     products: async () => {
       const result = await db.query(
-        "select * from products_inventory.products",
+        "select * from products_inventory.products order by id desc",
       );
       return result.rows;
     },
     expirationDates: async () => {
       const result = await db.query(
-        "select * from products_inventory.expiration_dates",
+        "select * from products_inventory.expiration_dates order by id desc",
       );
       return result.rows;
     },
