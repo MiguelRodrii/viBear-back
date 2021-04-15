@@ -1,6 +1,4 @@
-import { gql } from "https://deno.land/x/oak_graphql/mod.ts";
-
-const productsType = gql(`
+export const productsType = `
 scalar Date
 
 type Query {
@@ -105,6 +103,4 @@ input UpdateExpirationDate {
     value: Date
     product_id: Int
 }
-`);
-
-export default productsType;
+`;

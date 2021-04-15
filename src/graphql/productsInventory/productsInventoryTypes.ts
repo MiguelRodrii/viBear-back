@@ -1,4 +1,3 @@
-import productsType from "./types/productsType.ts";
-import productDefinitionsTypes from "./types/productDefinitionsType.ts";
+import {productsType} from "./types/productsType.ts";
 
-export const productsInventoryTypes = productsType;
+export const productsInventoryTypes = [productsType];
