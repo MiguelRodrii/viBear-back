@@ -24,6 +24,7 @@ app.use(oakCors());
 
 const GraphQLService = await applyGraphQL<Router>({
   Router,
+  usePlayground: env.USE_PLAYGROUND === undefined ? false : env.USE_PLAYGROUND === "true",
   typeDefs: types,
   resolvers: resolvers,
   context: (ctx: RouterContext) => {

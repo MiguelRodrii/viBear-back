@@ -35,7 +35,7 @@ const productsResolver = {
   },
   Mutation: {
     createProductType: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       {
         productType,
       }: {
@@ -50,10 +50,10 @@ const productsResolver = {
         `insert into products_inventory.product_types ("name", is_expirable, iva_percentage_id) values ('${productType.name}', ${productType.is_expirable}, ${productType.iva_percentage_id}) returning *;
       `,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
     updateProductType: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       {
         productType,
       }: {
@@ -86,10 +86,10 @@ const productsResolver = {
             : productType.iva_percentage_id
         } where id = ${productType.id} returning *;`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
     deleteProductType: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       { id }: { id: number },
     ) => {
       try {
@@ -103,7 +103,7 @@ const productsResolver = {
       }
     },
     createProductDefinition: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       {
         productDefinition,
       }: {
@@ -118,10 +118,10 @@ const productsResolver = {
         `insert into products_inventory.product_definitions ("name", description, product_type_id) values ('${productDefinition.name}', '${productDefinition.description}', ${productDefinition.product_type_id}) returning *;
       `,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
     updateProductDefinition: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       {
         productDefinition,
       }: {
@@ -156,10 +156,10 @@ const productsResolver = {
             : productDefinition.product_type_id
         } where id = ${productDefinition.id} returning *;`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
     deleteProductDefinition: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       { id }: { id: number },
     ) => {
       try {
@@ -173,7 +173,7 @@ const productsResolver = {
       }
     },
     createProduct: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       {
         product,
       }: {
@@ -190,10 +190,10 @@ const productsResolver = {
         `insert into products_inventory.products (initial_amount, current_amount, purchase_price, sale_price, product_definition_id) values 
       (${product.initial_amount}, ${product.current_amount}, ${product.purchase_price}, ${product.sale_price}, ${product.product_definition_id}) returning *;`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
     updateProduct: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       {
         product,
       }: {
@@ -236,10 +236,10 @@ const productsResolver = {
             : product.product_definition_id
         } where id = ${product.id} returning *;`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
     deleteProduct: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       { id }: { id: number },
     ) => {
       try {
@@ -253,7 +253,7 @@ const productsResolver = {
       }
     },
     createExpirationDate: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       {
         expirationDate,
       }: {
@@ -263,9 +263,9 @@ const productsResolver = {
       const result = await db.query(
         `insert into products_inventory.expiration_dates (value, product_id) values ('${expirationDate.value}', ${expirationDate.product_id}) returning *;`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
-    updateExpirationDate: async (parent: Record<string, unknown>, {
+    updateExpirationDate: async (_: unknown, {
       expirationDate,
     }: {
       expirationDate: { id: number; value: Date; product_id: number };
@@ -289,10 +289,10 @@ const productsResolver = {
             : expirationDate.product_id
         } where id = ${expirationDate.id} returning *;`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
     deleteExpirationDate: async (
-      parent: Record<string, unknown>,
+      _: unknown,
       { id }: { id: number },
     ) => {
       try {
@@ -311,7 +311,7 @@ const productsResolver = {
       const result = await db.query(
         `select ip.* from products_inventory.iva_percentages ip, products_inventory.product_types pt where ip.id = ${productType.iva_percentage_id};`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
   },
   ProductDefinition: {
@@ -319,7 +319,7 @@ const productsResolver = {
       const result = await db.query(
         `select pt.* from products_inventory.product_types pt, products_inventory.product_definitions pd where pt.id = ${productDefinition.product_type_id};`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
   },
   Product: {
@@ -327,7 +327,7 @@ const productsResolver = {
       const result = await db.query(
         `select pd.* from products_inventory.product_definitions pd, products_inventory.products p where pd.id = ${product.product_definition_id};`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
   },
   ExpirationDate: {
@@ -335,7 +335,7 @@ const productsResolver = {
       const result = await db.query(
         `select p.* from products_inventory.products p, products_inventory.expiration_dates ed where p.id = ${expirationDate.product_id};`,
       );
-      return result.rowCount === 0 ? [] : result.rows[0];
+      return result.rowCount === 0 ? null : result.rows[0];
     },
   },
 };
