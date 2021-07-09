@@ -1,0 +1,1 @@
+export const NAME_IS_DUPLICATED_EN = "The given name is duplicated, please insert a proper new one.";

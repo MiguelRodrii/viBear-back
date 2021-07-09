@@ -1,4 +1,4 @@
-import { Pool } from "https://deno.land/x/pg@v0.6.0/mod.ts";
+import { Pool } from "../../deps.ts";
 import {env} from "../config/env.ts";
 
 console.log()

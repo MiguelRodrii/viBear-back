@@ -1,4 +1,4 @@
-import {mergeResolvers} from 'https://cdn.skypack.dev/@graphql-tools/merge';
+import {mergeResolvers} from "../../deps.ts";
 import {productsInventoryResolvers} from "./productsInventory/productsInventoryResolvers.ts";
 import {salesRegistryResolver} from "./salesRegistry/salesRegistryResolvers.ts";
 

@@ -1,0 +1,1 @@
+export const IVA_PERCENTAGE_EN = "iva percentage";

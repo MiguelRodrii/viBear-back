@@ -1,3 +1,3 @@
-import { config } from "https://deno.land/x/dotenv/mod.ts";
+import { config } from "../../deps.ts";
 
 export const env = config();

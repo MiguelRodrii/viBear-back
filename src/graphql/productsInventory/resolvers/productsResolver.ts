@@ -1,30 +1,38 @@
 import { pool as db } from "../../../db/connection.ts";
+import { GQLError } from "../../../../deps.ts";
+import * as productsService from "../../../services/productsInventory/productsService.ts";
 
 const productsResolver = {
   Query: {
-    ivaPercentages: async () => {
-      const result = await db.query(
-        "select * from products_inventory.iva_percentages order by id desc",
-      );
-      return result.rows;
-    },
-    productTypes: async () => {
-      const result = await db.query(
-        "select * from products_inventory.product_types order by id desc",
-      );
-      return result.rows;
-    },
     productDefinitions: async () => {
       const result = await db.query(
         "select * from products_inventory.product_definitions order by id desc",
       );
       return result.rows;
     },
-    products: async () => {
-      const result = await db.query(
-        "select * from products_inventory.products order by id desc",
-      );
-      return result.rows;
+    products: async (_: unknown, {
+      that,
+    }: {
+      that: string | undefined;
+    }) => {
+      try {
+        switch (that) {
+          case "expired": {
+            return await productsService.findExpired();
+          }
+          case "available": {
+            return await productsService.findAvailable();
+          }
+          default: {
+            return await productsService.findAll();
+          }
+        }
+      } catch (error) {
+        throw new GQLError({
+          type: "unknown",
+          message: error.message,
+        });
+      }
     },
     expirationDates: async () => {
       const result = await db.query(
@@ -34,74 +42,6 @@ const productsResolver = {
     },
   },
   Mutation: {
-    createProductType: async (
-      _: unknown,
-      {
-        productType,
-      }: {
-        productType: {
-          name: string;
-          is_expirable: boolean;
-          iva_percentage_id: number;
-        };
-      },
-    ) => {
-      const result = await db.query(
-        `insert into products_inventory.product_types ("name", is_expirable, iva_percentage_id) values ('${productType.name}', ${productType.is_expirable}, ${productType.iva_percentage_id}) returning *;
-      `,
-      );
-      return result.rowCount === 0 ? null : result.rows[0];
-    },
-    updateProductType: async (
-      _: unknown,
-      {
-        productType,
-      }: {
-        productType: {
-          id: number;
-          name: string;
-          is_expirable: boolean;
-          iva_percentage_id: number;
-        };
-      },
-    ) => {
-      const previousValue = await db.query(
-        `select pt.* from products_inventory.product_types pt where pt.id = ${productType.id};`,
-      );
-      if (previousValue.rowCount === 0) {
-        throw new Error("Product type: " + productType.id + " non registered.");
-      }
-      const result = await db.query(
-        `update products_inventory.product_types set "name" = '${
-          productType.name === undefined
-            ? previousValue.rows[0].name
-            : productType.name
-        }', is_expirable = ${
-          productType.is_expirable === undefined
-            ? previousValue.rows[0].is_expirable
-            : productType.is_expirable
-        }, iva_percentage_id = ${
-          productType.iva_percentage_id === undefined
-            ? previousValue.rows[0].iva_percentage_id
-            : productType.iva_percentage_id
-        } where id = ${productType.id} returning *;`,
-      );
-      return result.rowCount === 0 ? null : result.rows[0];
-    },
-    deleteProductType: async (
-      _: unknown,
-      { id }: { id: number },
-    ) => {
-      try {
-        await db.query(
-          `delete from products_inventory.product_types where id = ${id};`,
-        );
-        return true;
-      } catch (error) {
-        console.log(error);
-        return false;
-      }
-    },
     createProductDefinition: async (
       _: unknown,
       {
@@ -304,14 +244,6 @@ const productsResolver = {
         console.log(error);
         return false;
       }
-    },
-  },
-  ProductType: {
-    iva_percentage: async (productType: { iva_percentage_id: number }) => {
-      const result = await db.query(
-        `select ip.* from products_inventory.iva_percentages ip, products_inventory.product_types pt where ip.id = ${productType.iva_percentage_id};`,
-      );
-      return result.rowCount === 0 ? null : result.rows[0];
     },
   },
   ProductDefinition: {
