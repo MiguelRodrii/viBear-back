@@ -1,0 +1,1 @@
+export const EXPIRATION_DATE_ALREADY_CREATED_EN = "The expiration date is already created, please insert new values.";

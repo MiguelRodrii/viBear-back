@@ -16,6 +16,8 @@ type Product {
     initial_amount: Int
     current_amount: Int
     product_definition: ProductDefinition
+    created_at: DateTime
+    modified_at: DateTime
 }
 input CreateProduct {
     purchase_price: Float!

@@ -49,13 +49,7 @@ export const productTypesResolver = {
       _: unknown,
       { id }: { id: number },
     ) => {
-      try {
-        await productTypesService.deleteOneById(id);
-        return true;
-      } catch (error) {
-        console.log(error);
-        return false;
-      }
+      return await productTypesService.deleteOneById(id);
     },
   },
   ProductType: {

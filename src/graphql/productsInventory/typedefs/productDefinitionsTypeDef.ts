@@ -13,7 +13,9 @@ type ProductDefinition {
     id: Int
     name: String
     description: String
-    product_type: ProductType    
+    product_type: ProductType
+    created_at: DateTime
+    modified_at: DateTime
 }
 input CreateProductDefinition {
     name: String!

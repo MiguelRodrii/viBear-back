@@ -1,5 +1,6 @@
 export const expirationDatesTypeDef = `
 scalar Date
+scalar DateTime
 
 type Query {
     expirationDates: [ExpirationDate]
@@ -15,6 +16,8 @@ type ExpirationDate {
     id: Int
     value: Date
     product: Product
+    created_at: DateTime
+    modified_at: DateTime
 }
 input CreateExpirationDate {
     value: Date!

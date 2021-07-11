@@ -1,1 +1,2 @@
 export const NAME_IS_DUPLICATED_EN = "The given name is duplicated, please insert a proper new one.";
+export const PRODUCT_TYPE_ALREADY_CREATED_EN = "The given product type is already created, please insert new values.";

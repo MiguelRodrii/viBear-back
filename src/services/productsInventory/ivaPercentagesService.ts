@@ -5,6 +5,7 @@ import {
   NON_REGISTERED_EN,
 } from "../../constants/exceptions.ts";
 import { IVA_PERCENTAGE_EN } from "../../constants/productsInventory/ivaPercentages/keywords.ts";
+import { CONNECTION_REFUSED } from "../../constants/databaseKeywords.ts";
 
 export const findAll = async () => {
   try {
@@ -13,10 +14,13 @@ export const findAll = async () => {
     );
     return result.rows;
   } catch (error) {
-    throw new KnownError({
-      technical: error.message,
-      nontechnical: DB_INACTIVE_EN,
-    });
+    if (error.message.toLowerCase().includes(CONNECTION_REFUSED)) {
+      throw new KnownError({
+        technical: error.message,
+        nontechnical: DB_INACTIVE_EN,
+      });
+    }
+    throw error;
   }
 };
 
@@ -34,9 +38,12 @@ export const findOneById = async (id: number) => {
       return result.rows[0];
     }
   } catch (error) {
-    throw new KnownError({
-      nontechnical: DB_INACTIVE_EN,
-      technical: error.message,
-    });
+    if (error.message.toLowerCase().includes(CONNECTION_REFUSED)) {
+      throw new KnownError({
+        technical: error.message,
+        nontechnical: DB_INACTIVE_EN,
+      });
+    }
+    throw error;
   }
 };

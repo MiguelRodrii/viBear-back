@@ -13,7 +13,9 @@ type ProductType {
     id: Int
     name: String
     is_expirable: Boolean
-    iva_percentage: IvaPercentage    
+    iva_percentage: IvaPercentage
+    created_at: DateTime
+    modified_at: DateTime    
 }
 input CreateProductType {
     name: String!
